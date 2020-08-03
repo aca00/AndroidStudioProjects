@@ -1,16 +1,8 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 
 void main() {
   runApp(MyApp());
 }
-//TODO: Remove this sasi
-// void sasi() {
-//   final StreamController tunel = StreamController();
-//   tunel.sink.add('aca');
-//   tunel.stream.
-// }
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
