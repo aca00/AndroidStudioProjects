@@ -1,32 +1,64 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test2/counterBloc.dart';
 
 void main() {
-  runApp(MaterialApp(
-    
-    debugShowCheckedModeBanner: false,
-    home: Home(),
-  ));
+  runApp(MyApp());
 }
 
-class Home extends StatelessWidget {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text(
-          '1',
-          style: TextStyle(fontSize: 25),
-        ),
-      ),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.end,
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          body: BlocProvider(
+              create: (BuildContext context) => CounterBloc(),
+              child: CounterScreen()),
+        ));
+  }
+}
+
+class CounterScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final _counterBloc = BlocProvider.of<CounterBloc>(context);
+
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          FloatingActionButton(
-            onPressed: () {},
-            child: Icon(Icons.add),
+          BlocBuilder<CounterBloc, int>(
+              builder: (BuildContext context, int state) {
+            return Text(
+              'value: $state',
+              style: TextStyle(fontSize: 26),
+            );
+          }),
+          SizedBox(
+            height: 15,
           ),
-          FloatingActionButton(onPressed: () {}, child: Icon(Icons.remove)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              RaisedButton(
+                onPressed: () {
+                  _counterBloc.add(CounterEvents.increment);
+                },
+                child: Text('Increase'),
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              RaisedButton(
+                onPressed: () {
+                  _counterBloc.add(CounterEvents.decrement);
+                },
+                child: Text('Decrease'),
+              ),
+            ],
+          )
         ],
       ),
     );
