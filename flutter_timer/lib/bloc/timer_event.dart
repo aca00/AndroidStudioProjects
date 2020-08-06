@@ -6,12 +6,10 @@ import 'package:meta/meta.dart';
 //     TimerStarted — informs the TimerBloc that the timer should be started.
 //     TimerPaused — informs the TimerBloc that the timer should be paused.
 //     TimerResumed — informs the TimerBloc that the timer should be resumed.
-//     TimerReset — informs the TimerBloc that the timer should be reset to the 
+//     TimerReset — informs the TimerBloc that the timer should be reset to the
 //        original state.
-//     TimerTicked — informs the TimerBloc that a tick has occurred and that 
+//     TimerTicked — informs the TimerBloc that a tick has occurred and that
 //      it needs to update its state accordingly.
-
-
 
 abstract class TimerEvent extends Equatable {
   const TimerEvent();
@@ -20,25 +18,25 @@ abstract class TimerEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class TimerStarted extends TimerEvent {
+class TimerStartedEvent extends TimerEvent {
   final int duration;
 
-  const TimerStarted({@required this.duration});
+  const TimerStartedEvent({@required this.duration});
 
   @override
   String toString() => "TimerStarted { duration: $duration }";
 }
 
-class TimerPaused extends TimerEvent {}
+class TimerPausedEvent extends TimerEvent {}
 
-class TimerResumed extends TimerEvent {}
+class TimerResumedEvent extends TimerEvent {}
 
-class TimerReset extends TimerEvent {}
+class TimerResetEvent extends TimerEvent {}
 
-class TimerTicked extends TimerEvent {
+class TimerTickedEvent extends TimerEvent {
   final int duration;
 
-  const TimerTicked({@required this.duration});
+  const TimerTickedEvent({@required this.duration});
 
   @override
   List<Object> get props => [duration];

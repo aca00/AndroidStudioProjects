@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test3/ui/global/theme/bloc/theme_bloc.dart';
-import 'package:test3/ui/global/theme/bloc/theme_state.dart';
-import 'package:test3/ui/home/home_page.dart';
+
+
+import 'bloc/theme_bloc.dart';
+import 'bloc/theme_state.dart';
+import 'home_page.dart';
+
 void main() {
   runApp(MyApp());
 }

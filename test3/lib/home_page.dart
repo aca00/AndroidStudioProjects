@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:test3/ui/preference/preference.dart';
+
+import 'preference.dart';
+
 
 class HomePage extends StatelessWidget {
   @override
