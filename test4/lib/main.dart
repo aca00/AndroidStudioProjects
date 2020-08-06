@@ -32,7 +32,12 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        leading: Icon(Icons.home),
+        leading: IconButton(
+          icon: Icon(Icons.wb_sunny),
+          onPressed: () {
+            //darkmodeOn
+          },
+        ),
         title: Text('Sample'),
       ),
       body: BlocBuilder<CounterBloc, CounterState>(

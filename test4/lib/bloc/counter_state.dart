@@ -1,9 +1,9 @@
 part of 'counter_bloc.dart';
 
 abstract class CounterState {
-  final int countNum;
+
   final String msgState;
-  const CounterState({this.msgState, this.countNum});
+  const CounterState({this.msgState});
 }
 
 class CounterInitialState extends CounterState {
