@@ -54,7 +54,7 @@ class Timer extends StatelessWidget {
                       final String secondsStr = (state.duration % 60)
                           .floor()
                           .toString()
-                          .padLeft(2, '0');
+                          .padRight(2, '0');
                       return Text(
                         '$minutesStr:$secondsStr',
                         style: Timer.timerTextStyle,

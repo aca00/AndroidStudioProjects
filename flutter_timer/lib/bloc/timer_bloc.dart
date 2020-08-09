@@ -29,11 +29,11 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
       yield* _mapTimerTickedToState(event);
     } else if (event is TimerPausedEvent) {
       yield* _mapTimerPausedToState(event);
-    }else if (event is TimerResumedEvent) {
+    } else if (event is TimerResumedEvent) {
       yield* _mapTimerResumedToState(event);
-    }else if (event is TimerResetEvent) {
+    } else if (event is TimerResetEvent) {
       yield* _mapTimerResetToState(event);
-    } 
+    }
   }
 
   // In addition, if there was already an open _tickerSubscription we need to
@@ -66,9 +66,8 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
         : TimerRunCompleteState();
   }
 
-
-  // In _mapTimerPausedToState if the state of our TimerBloc is 
-  // TimerRunInProgress, then we can pause the _tickerSubscription and push a 
+  // In _mapTimerPausedToState if the state of our TimerBloc is
+  // TimerRunInProgress, then we can pause the _tickerSubscription and push a
   // TimerRunPause state with the current timer duration.
   Stream<TimerState> _mapTimerPausedToState(TimerPausedEvent pause) async* {
     if (state is TimerRunInProgressState) {
@@ -77,10 +76,9 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
     }
   }
 
-
-  // The TimerResumed event handler is very similar to the TimerPaused event 
-  // handler. If the TimerBloc has a state of TimerRunPause and it receives a 
-  // TimerResumed event, then it resumes the _tickerSubscription and pushes a 
+  // The TimerResumed event handler is very similar to the TimerPaused event
+  // handler. If the TimerBloc has a state of TimerRunPause and it receives a
+  // TimerResumed event, then it resumes the _tickerSubscription and pushes a
   // TimerRunInProgress state with the current duration.
   Stream<TimerState> _mapTimerResumedToState(TimerResumedEvent resume) async* {
     if (state is TimerRunPauseState) {
@@ -89,13 +87,12 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
     }
   }
 
-  // If the TimerBloc receives a TimerReset event, it needs to cancel the 
-  // current _tickerSubscription so that it isn’t notified of any additional 
+  // If the TimerBloc receives a TimerReset event, it needs to cancel the
+  // current _tickerSubscription so that it isn’t notified of any additional
   // ticks and pushes a TimerInitial state with the original duration.
-  
+
   Stream<TimerState> _mapTimerResetToState(TimerResetEvent reset) async* {
     _tickerSubscription?.cancel();
     yield TimerInitialState(_duration);
   }
-
 }

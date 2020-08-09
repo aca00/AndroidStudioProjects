@@ -26,11 +26,14 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
+  int _count = 0;
+  Color asd = Colors.orange;
+
   @override
   Widget build(BuildContext context) {
     final _counterBloc = BlocProvider.of<CounterBloc>(context);
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey,
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.wb_sunny),
@@ -47,7 +50,7 @@ class MyHomePage extends StatelessWidget {
             children: <Widget>[
               Center(
                 child: Text(
-                  'Count value: ',
+                  'Count value: ${this._count}',
                   style: Theme.of(context).textTheme.headline4,
                 ),
               ),
@@ -64,9 +67,27 @@ class MyHomePage extends StatelessWidget {
                 height: 17,
               ),
               Center(
-                child: Text(
-                  'Sample Message:\n $state',
-                  style: Theme.of(context).textTheme.bodyText1,
+                child: BlocListener<CounterBloc, CounterState>(
+                  listener: (context, state) {
+                    if (state is CounterIncrementState) {
+                      this.asd = Colors.green;
+                      this._count = this._count + 1;
+                      debugPrint('incremnt: ${this.asd}');
+
+                      debugPrint("increment: $state");
+                    }
+                    if (state is CounterDecrementState) {
+                      this.asd = Colors.indigo;
+                      this._count = this._count - 1;
+                      debugPrint('decrememt: ${this.asd}');
+
+                      debugPrint("decrement: $state");
+                    }
+                  },
+                  child: Text(
+                    'Sample Message: \n $state',
+                    style: TextStyle(fontSize: 12, color: this.asd),
+                  ),
                 ),
               ),
             ],
