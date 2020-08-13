@@ -24,7 +24,7 @@ class SettingsScreenState extends State<SettingsScreen> {
     Colors.blueAccent,
     Colors.redAccent,
     Colors.lightGreen,
-    Colors.yellow
+    Colors.yellow,
   ];
   List<String> textSizes = ['Small', 'Medium', 'Large'];
 
