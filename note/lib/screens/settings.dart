@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:note/screens/aboutUs.dart';
 import 'package:flutter/material.dart';
@@ -250,7 +249,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                     leading: CircleAvatar(
                       child: Icon(
                         Icons.text_format,
-                        color: Colors.white,
+                        color: Colors.black,
                       ),
                       backgroundColor: accentColors[accentColorCount],
                     ),

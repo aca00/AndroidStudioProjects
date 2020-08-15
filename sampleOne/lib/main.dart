@@ -13,7 +13,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   Config config = Config();
-  Future<Map> getMap() async {
+  Future<Map> getMapOfInitialVals() async {
     var mapOfInitialVals = Map();
     mapOfInitialVals['count'] = await config.loadCounterData();
     mapOfInitialVals['boolCheck'] = await config.loadBool();
@@ -23,13 +23,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: getMap(),
+      future: getMapOfInitialVals(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.data == null) {
           return Container(); //replace with loading screen
         } else {
-          print('snapshot: ${snapshot.data["count"]}');
-          print('snapshot: ${snapshot.data["boolCheck"]}');
+          print('snapshot count value: ${snapshot.data["count"]}');
+          print('snapshot dark mode: ${snapshot.data["boolCheck"]}');
           return MultiBlocProvider(
               providers: [
                 BlocProvider<CounterBloc>(
@@ -39,16 +39,14 @@ class MyApp extends StatelessWidget {
                   create: (context) => ThemeBloc(snapshot.data['boolCheck']),
                 )
               ],
-              child: MaterialApp(
-                home: Home(),
-              ));
-
-          // BlocProvider(
-          //     create: (context) => CounterBloc(snapshot.data["count"]),
-          //     child: MaterialApp(
-          //       home: Home(),
-          //       //TODO: here
-          //     ));
+              child:
+                  BlocBuilder<ThemeBloc, ThemeState>(builder: (context, state) {
+                debugPrint('${state.myTheme}');
+                return MaterialApp(
+                  home: Home(),
+                  theme: state.myTheme,
+                );
+              }));
         }
       },
     );
@@ -59,17 +57,17 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final counterBloc = BlocProvider.of<CounterBloc>(context);
+    final themeBloc = BlocProvider.of<ThemeBloc>(context);
     assert(counterBloc != null); // ounterBloc should not be null
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white,
         leading: IconButton(
             icon: Icon(
               Icons.wb_sunny,
               color: Colors.blue,
             ),
             onPressed: () {
+              themeBloc.add(ThemeChangedEvent());
               //swith to dark mode
             }),
       ),

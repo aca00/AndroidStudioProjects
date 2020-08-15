@@ -14,9 +14,9 @@ class Config {
     return pref.getInt('key_for_counter') ?? 0;
   }
 
-  Future<bool> saveBool() async {
+  Future<bool> saveBool(bool val) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    return pref.setBool('key_for_theme', true);
+    return pref.setBool('key_for_theme', val);
   }
 
   Future<bool> loadBool() async {
@@ -32,9 +32,21 @@ enum AppThemes {
 
 final appThemeData = {
   AppThemes.light: ThemeData(
-    brightness: Brightness.light,
-  ),
+      brightness: Brightness.light,
+      appBarTheme: AppBarTheme(
+          elevation: 0.0,
+          color: Colors.transparent,
+          //brightness: Brightness.light,
+          iconTheme: IconThemeData(color: Colors.white)),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+          //some code
+          )),
   AppThemes.dark: ThemeData(
-    brightness: Brightness.dark,
-  )
+      brightness: Brightness.dark,
+      appBarTheme: AppBarTheme(
+          elevation: 0.0,
+          color: Colors.transparent,
+
+          //brightness: Brightness.dark,
+          iconTheme: IconThemeData(color: Colors.black)))
 };
