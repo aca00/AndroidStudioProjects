@@ -14,16 +14,11 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  Future<Map> getMapOfInitialVals() async {
-    Map initailVals = Map();
-    initailVals['checkDark'] = await config.loadBool();
-    return initailVals;
-  }
-
+  
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: getMapOfInitialVals(),
+      future: config.getMapOfInitialVals(),
       builder: (context, snapshot) {
         if (snapshot.data == null) {
           return Container();

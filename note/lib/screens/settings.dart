@@ -1,3 +1,4 @@
+import 'package:note/config/config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:note/screens/aboutUs.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,171 @@ class SettingsScreenState extends State<SettingsScreen> {
   ];
   List<String> textSizes = ['Small', 'Medium', 'Large'];
 
-  //save darkmode settings to storage. It returns a bool if the save was successful
+
+  @override
+  void initState() {
+    super.initState();
+    setDarkModeVariables();
+    _setAccentColorCount();
+    _setTextSizeCount();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: config.getMapOfInitialVals(),
+      builder: (context, snapshot) {
+        if (snapshot.data == null) {
+          return Container();
+        } else {
+          return Scaffold(
+            
+            backgroundColor: this._frameColor,
+            body: CustomScrollView(
+              slivers: <Widget>[
+                SliverAppBar(
+                  elevation: 0.0,
+                  backgroundColor: this._frameColor,
+                  snap: false,
+                  floating: true,
+                  pinned: true,
+                  expandedHeight: 120.0,
+                  leading: IconButton(
+                      icon: Icon(
+                        Icons.info,
+                        color: accentColors[accentColorCount],
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AboutUsScreen(
+                                      this._frameColor,
+                                      this._textColor,
+                                      accentColors[accentColorCount],
+                                      this._cardColor,
+                                    )));
+                      }),
+                  actions: <Widget>[
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => NoteItHomePageScreen()));
+                      },
+                      icon: Icon(
+                        Icons.library_books,
+                        color: this.accentColors[accentColorCount],
+                      ),
+                    ),
+                  ],
+                  flexibleSpace: FlexibleSpaceBar(
+                    centerTitle: true,
+                    title: Text(
+                      'Settings',
+                      style: TextStyle(
+                        color: this._textColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                SliverFillRemaining(
+                  child: Column(
+                    children: <Widget>[
+                      ListTile(
+                        leading: CircleAvatar(
+                          child: Icon(
+                            Icons.wb_sunny,
+                            color: this._frameColor,
+                          ),
+                          backgroundColor: this._textColor,
+                        ),
+                        title: Text(
+                          'Dark mode',
+                          style: TextStyle(color: this._textColor),
+                        ),
+                        trailing: Switch(
+                          value: this._switchDark,
+                          onChanged: (bool switchVal) {
+                            _gotoDarkMode(switchVal);
+                          },
+                        ),
+                      ),
+                      ListTile(
+                        onTap: () {
+                          _increaseAccentColorCountOnPressed();
+                        },
+                        leading: CircleAvatar(
+                          child: Icon(
+                            Icons.color_lens,
+                            color: Colors.white,
+                          ),
+                          backgroundColor: accentColors[accentColorCount],
+                        ),
+                        title: Text(
+                          'Accent color',
+                          style: TextStyle(color: this._textColor),
+                        ),
+                      ),
+                      ListTile(
+                        leading: CircleAvatar(
+                          child: Icon(
+                            Icons.text_format,
+                            color: Colors.black,
+                          ),
+                          backgroundColor: accentColors[accentColorCount],
+                        ),
+                        title: Text(
+                          'Text size',
+                          style: TextStyle(color: this._textColor),
+                        ),
+                        trailing: Text(
+                          '${textSizes[textSizeCount]}',
+                          style: TextStyle(color: this._textColor),
+                        ),
+                        onTap: () {
+                          _increseTextSizeCountOnPressed();
+                        },
+                      ),
+                      SizedBox(height: 8.0),
+                      Row(children: <Widget>[
+                        Container(
+                          //color: Colors.yellow,
+                          padding: EdgeInsets.fromLTRB(10.0, 10, 5, 0),
+                          child: Text('Back up',
+                              style: TextStyle(color: Colors.grey)),
+                        ),
+                      ]),
+                      SizedBox(
+                        height: 8.0,
+                      ),
+                      ListTile(
+                        leading: CircleAvatar(
+                          child: Icon(
+                            Icons.cloud_circle,
+                            color: Colors.white,
+                          ),
+                          backgroundColor: accentColors[accentColorCount],
+                        ),
+                        title: Text(
+                          'Back up',
+                          style: TextStyle(color: this._textColor),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+      },
+    );
+  }
+
+    //save darkmode settings to storage. It returns a bool if the save was successful
   Future<bool> _saveDarkModeSettings(switchVal) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return await prefs.setBool('key_for_darkmode', switchVal);
@@ -144,158 +309,4 @@ class SettingsScreenState extends State<SettingsScreen> {
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
-    setDarkModeVariables();
-    _setAccentColorCount();
-    _setTextSizeCount();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: this._frameColor,
-        body: CustomScrollView(
-          slivers: <Widget>[
-            SliverAppBar(
-              elevation: 0.0,
-              backgroundColor: this._frameColor,
-              snap: false,
-              floating: true,
-              pinned: true,
-              expandedHeight: 120.0,
-              leading: IconButton(
-                  icon: Icon(
-                    Icons.info,
-                    color: accentColors[accentColorCount],
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AboutUsScreen(
-                                  this._frameColor,
-                                  this._textColor,
-                                  accentColors[accentColorCount],
-                                  this._cardColor,
-                                )));
-                  }),
-              actions: <Widget>[
-                IconButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => NoteItHomePageScreen()));
-                  },
-                  icon: Icon(
-                    Icons.library_books,
-                    color: this.accentColors[accentColorCount],
-                  ),
-                ),
-              ],
-              flexibleSpace: FlexibleSpaceBar(
-                centerTitle: true,
-                title: Text(
-                  'Settings',
-                  style: TextStyle(
-                    color: this._textColor,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-            SliverFillRemaining(
-              child: Column(
-                children: <Widget>[
-                  ListTile(
-                    leading: CircleAvatar(
-                      child: Icon(
-                        Icons.wb_sunny,
-                        color: this._frameColor,
-                      ),
-                      backgroundColor: this._textColor,
-                    ),
-                    title: Text(
-                      'Dark mode',
-                      style: TextStyle(color: this._textColor),
-                    ),
-                    trailing: Switch(
-                      value: this._switchDark,
-                      onChanged: (bool switchVal) {
-                        _gotoDarkMode(switchVal);
-                      },
-                    ),
-                  ),
-                  ListTile(
-                    onTap: () {
-                      _increaseAccentColorCountOnPressed();
-                    },
-                    leading: CircleAvatar(
-                      child: Icon(
-                        Icons.color_lens,
-                        color: Colors.white,
-                      ),
-                      backgroundColor: accentColors[accentColorCount],
-                    ),
-                    title: Text(
-                      'Accent color',
-                      style: TextStyle(color: this._textColor),
-                    ),
-                  ),
-                  ListTile(
-                    leading: CircleAvatar(
-                      child: Icon(
-                        Icons.text_format,
-                        color: Colors.black,
-                      ),
-                      backgroundColor: accentColors[accentColorCount],
-                    ),
-                    title: Text(
-                      'Text size',
-                      style: TextStyle(color: this._textColor),
-                    ),
-                    trailing: Text(
-                      '${textSizes[textSizeCount]}',
-                      style: TextStyle(color: this._textColor),
-                    ),
-                    onTap: () {
-                      _increseTextSizeCountOnPressed();
-                    },
-                  ),
-                  SizedBox(height: 8.0),
-                  Row(children: <Widget>[
-                    Container(
-                      //color: Colors.yellow,
-                      padding: EdgeInsets.fromLTRB(10.0, 10, 5, 0),
-                      child:
-                          Text('Back up', style: TextStyle(color: Colors.grey)),
-                    ),
-                  ]),
-                  SizedBox(
-                    height: 8.0,
-                  ),
-                  ListTile(
-                    leading: CircleAvatar(
-                      child: Icon(
-                        Icons.cloud_circle,
-                        color: Colors.white,
-                      ),
-                      backgroundColor: accentColors[accentColorCount],
-                    ),
-                    title: Text(
-                      'Back up',
-                      style: TextStyle(color: this._textColor),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }
