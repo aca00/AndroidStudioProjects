@@ -1,5 +1,0 @@
-The first thing we're going to take a look at is how to create a BlocObserver
-which will help us observe all state changes in the application.
-
-
-Link: https://bloclibrary.dev/#/fluttercountertutorial
